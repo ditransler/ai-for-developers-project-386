@@ -1,0 +1,13 @@
+{
+  "name": "Node.js 24 + .NET 10",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-dotnettools.csharp", "dbaeumer.vscode-eslint"]
+    }
+  },
+  "postCreateCommand": "dotnet --version && node --version && npm --version"
+}
