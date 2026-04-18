@@ -28,13 +28,19 @@ model EventType {
   description: string;
 
   /** Duration of one slot, in minutes. */
+  @TypeSpec.minValue(1)
   durationMinutes: int32;
 }
 
 @doc("Create an event type.")
 model EventTypeCreate {
+  @format("uuid")
+  id: string;
+
   name: string;
   description: string;
+
+  @TypeSpec.minValue(1)
   durationMinutes: int32;
 }
 
@@ -42,6 +48,8 @@ model EventTypeCreate {
 model EventTypeUpdate {
   name?: string;
   description?: string;
+
+  @TypeSpec.minValue(1)
   durationMinutes?: int32;
 }
 
@@ -98,6 +106,13 @@ model Conflict {
 }
 
 @error
+model DeleteEventTypeConflict {
+  @statusCode _: 409;
+  error: "FUTURE_BOOKINGS_EXIST";
+  message: string;
+}
+
+@error
 model InternalError {
   @statusCode _: 500;
   message: string;
@@ -120,7 +135,7 @@ Free slots for the given type within the default **14-day** booking window from 
 Slots honor `durationMinutes`, exclude time covered by **any** booking (all types), and align with `CreateBookingRequest.startAt`.
 """)
   listAvailableSlots(
-    @path eventTypeId: string,
+    @path @format("uuid") eventTypeId: string,
   ): OkResponse & Body<TimeSlot[]> | NotFound | InternalError;
 
   @post
@@ -147,14 +162,16 @@ interface AdminRoutes {
   @route("/admin/event-types/{eventTypeId}")
   @doc("Update an event type.")
   updateEventType(
-    @path eventTypeId: string,
+    @path @format("uuid") eventTypeId: string,
     @body body: EventTypeUpdate,
   ): OkResponse & Body<EventType> | BadRequest | NotFound | InternalError;
 
   @delete
   @route("/admin/event-types/{eventTypeId}")
   @doc("Delete an event type. Implementations may reject if future bookings exist.")
-  deleteEventType(@path eventTypeId: string): NoContentResponse | NotFound | Conflict | InternalError;
+  deleteEventType(
+    @path @format("uuid") eventTypeId: string,
+  ): NoContentResponse | NotFound | DeleteEventTypeConflict | InternalError;
 
   @get
   @route("/admin/bookings")
