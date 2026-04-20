@@ -41,6 +41,17 @@ cd api-contract && npm ci
 cd .. && make tsp-openapi
 ```
 
+## Frontend (Nuxt)
+
+The web UI lives in [`frontend/`](frontend/). It talks to the API only via HTTP, using `NUXT_PUBLIC_API_BASE_URL` (see [`frontend/.env.example`](frontend/.env.example)).
+
+Typical local setup in two terminals:
+
+1. `make prism-mock` — OpenAPI mock on port 4010.
+2. `cd frontend && npm ci && npm run dev` — Nuxt dev server.
+
+Details: [`frontend/README.md`](frontend/README.md).
+
 ## Links
 
 [Cal.com](https://cal.com) — a reference service that can be used as a guide when designing the user flow.
