@@ -3,7 +3,7 @@ emit:
 
 options:
   "@typespec/openapi3":
-    output-file: "{project-root}/../openapi/openapi.yaml"
+    output-file: "{project-root}/openapi.yaml"
     "new-line": lf
 
 linter:

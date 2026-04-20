@@ -16,6 +16,12 @@ As a result, you should end up with a small but complete application. A user can
 
 In this project, we go through the full development cycle of a small web application with AI as a working tool. First, we need to define what exactly the application should do and establish a contract between the client and the server. Then, based on this contract, we sequentially build the interface, implement the backend, cover the main scenarios with tests, and prepare the service for deployment.
 
+The project teaches not just how to write code, but how to structure development in stages. It’s important to first agree on system behavior, then implement it in the interface and on the server, and finally verify everything at the level of user scenarios.
+
+The key working format in this project is that all development is done with the help of AI agents. Ideally, you don’t write a single line of code manually: you formulate tasks for the agent, review the result, and iteratively improve the solution.
+
+The project can be completed using any technology stack. The limitation is not defined by the language or framework, but by the final result: the application must be packaged into a Docker image and run in a container. This approach allows you to focus on architecture and the API contract rather than on choosing specific tools.
+
 ### Design First and the API contract
 
 We use a **Design First** workflow: we agree on behavior and the **HTTP API contract first**, then implement the **frontend and backend separately** against that shared contract. The contract is the single place where the two sides align, so neither has to reverse-engineer the other.
@@ -24,11 +30,16 @@ We describe the contract in **TypeSpec**. TypeSpec is a language for API definit
 
 That contract-first flow matters for AI-assisted development: agents can implement from an explicit specification instead of reading large amounts of application code, which keeps work cheaper and easier to steer. When behavior changes, you update the contract and then adjust both client and server in step—without rediscovering the whole system each time.
 
-The project teaches not just how to write code, but how to structure development in stages. It’s important to first agree on system behavior, then implement it in the interface and on the server, and finally verify everything at the level of user scenarios.
+## API contract (TypeSpec)
 
-The key working format in this project is that all development is done with the help of AI agents. Ideally, you don’t write a single line of code manually: you formulate tasks for the agent, review the result, and iteratively improve the solution.
+The HTTP contract and generated OpenAPI live under [`api-contract/`](api-contract/): [`api-contract/main.tsp`](api-contract/main.tsp) and [`api-contract/openapi.yaml`](api-contract/openapi.yaml).
 
-The project can be completed using any technology stack. The limitation is not defined by the language or framework, but by the final result: the application must be packaged into a Docker image and run in a container. This approach allows you to focus on architecture and the API contract rather than on choosing specific tools.
+From the repository root, install dependencies and compile:
+
+```bash
+cd api-contract && npm ci
+cd .. && make tsp-openapi
+```
 
 ## Links
 

@@ -4,11 +4,11 @@
 
 help:
 	@echo "Available targets:"
-	@echo "  make tsp-compile   - run npm run tsp:compile"
-	@echo "  make tsp-openapi   - run npm run tsp:openapi"
+	@echo "  make tsp-compile   - TypeSpec compile (api-contract/)"
+	@echo "  make tsp-openapi   - emit OpenAPI to api-contract/openapi.yaml"
 
 tsp-compile:
-	npm run tsp:compile
+	npm --prefix api-contract run tsp:compile
 
 tsp-openapi:
-	npm run tsp:openapi
+	npm --prefix api-contract run tsp:openapi
