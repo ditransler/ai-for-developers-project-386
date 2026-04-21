@@ -309,6 +309,13 @@ components:
         guestDisplayName:
           type: string
       description: Confirmed booking on [startAt, endAt).
+      example:
+        id: 6ba7b810-9dad-11d1-80b4-00c04fd430c8
+        eventTypeId: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+        eventTypeName: Product demo
+        startAt: '2019-08-24T20:15:00.000Z'
+        endAt: '2019-08-24T20:30:00.000Z'
+        guestDisplayName: Alex Kim
     Conflict:
       type: object
       required:
@@ -349,6 +356,14 @@ components:
             - FUTURE_BOOKINGS_EXIST
         message:
           type: string
+    EventDurationMinutes:
+      type: number
+      enum:
+        - 15
+        - 30
+        - 45
+        - 60
+      description: 'Allowed slot length: quarter-hour blocks up to one hour (for Prism mocks and real APIs).'
     EventType:
       type: object
       required:
@@ -365,11 +380,15 @@ components:
         description:
           type: string
         durationMinutes:
-          type: integer
-          format: int32
-          minimum: 1
-          description: Duration of one slot, in minutes.
+          allOf:
+            - $ref: '#/components/schemas/EventDurationMinutes'
+          description: Duration of one slot, in minutes (15, 30, 45, or 60 only).
       description: 'Bookable meeting template: identity, copy, and slot length.'
+      example:
+        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+        name: Product demo
+        description: A 15-minute walkthrough for new customers.
+        durationMinutes: 15
     EventTypeCreate:
       type: object
       required:
@@ -386,9 +405,7 @@ components:
         description:
           type: string
         durationMinutes:
-          type: integer
-          format: int32
-          minimum: 1
+          $ref: '#/components/schemas/EventDurationMinutes'
       description: Create an event type.
     EventTypeUpdate:
       type: object
@@ -398,9 +415,7 @@ components:
         description:
           type: string
         durationMinutes:
-          type: integer
-          format: int32
-          minimum: 1
+          $ref: '#/components/schemas/EventDurationMinutes'
       description: Partial update for an event type.
     InternalError:
       type: object

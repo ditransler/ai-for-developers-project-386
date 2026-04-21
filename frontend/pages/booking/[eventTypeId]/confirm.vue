@@ -66,7 +66,10 @@ async function submit() {
     })
     await navigateTo('/booking')
   } catch (e: unknown) {
-    const msg = getFetchErrorMessage(e, t('errors.generic'))
+    const msg = getFetchErrorMessage(e, t('errors.generic'), {
+      network: t('errors.network'),
+      server: t('errors.server'),
+    })
     const status = (e as { statusCode?: number }).statusCode
     toast.add({
       title: status === 409 ? t('confirm.conflict') : msg,
@@ -98,13 +101,13 @@ async function submit() {
           <p class="mt-1 text-zinc-600">{{ summaryDate }} · {{ timeLabel }}</p>
         </div>
 
-        <UFormGroup :label="t('confirm.guestName')">
+        <UFormField :label="t('confirm.guestName')">
           <UInput
             v-model="guestName"
             :placeholder="t('confirm.guestNamePlaceholder')"
             autocomplete="name"
           />
-        </UFormGroup>
+        </UFormField>
       </div>
 
       <div class="flex flex-wrap gap-2 border-t border-zinc-100 p-6">

@@ -19,7 +19,21 @@ namespace CalendarBooking;
 
 // ——— Shared models ———
 
+/** Allowed slot length: quarter-hour blocks up to one hour (for Prism mocks and real APIs). */
+enum EventDurationMinutes {
+  fifteen: 15,
+  thirty: 30,
+  fortyFive: 45,
+  sixty: 60,
+}
+
 @doc("Bookable meeting template: identity, copy, and slot length.")
+@TypeSpec.example(#{
+  id: "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+  name: "Product demo",
+  description: "A 15-minute walkthrough for new customers.",
+  durationMinutes: EventDurationMinutes.fifteen,
+})
 model EventType {
   @format("uuid")
   id: string;
@@ -27,9 +41,8 @@ model EventType {
   name: string;
   description: string;
 
-  /** Duration of one slot, in minutes. */
-  @TypeSpec.minValue(1)
-  durationMinutes: int32;
+  /** Duration of one slot, in minutes (15, 30, 45, or 60 only). */
+  durationMinutes: EventDurationMinutes;
 }
 
 @doc("Create an event type.")
@@ -40,8 +53,7 @@ model EventTypeCreate {
   name: string;
   description: string;
 
-  @TypeSpec.minValue(1)
-  durationMinutes: int32;
+  durationMinutes: EventDurationMinutes;
 }
 
 @doc("Partial update for an event type.")
@@ -49,8 +61,7 @@ model EventTypeUpdate {
   name?: string;
   description?: string;
 
-  @TypeSpec.minValue(1)
-  durationMinutes?: int32;
+  durationMinutes?: EventDurationMinutes;
 }
 
 @doc("A free interval the guest may book.")
@@ -71,6 +82,14 @@ model CreateBookingRequest {
 }
 
 @doc("Confirmed booking on [startAt, endAt).")
+@TypeSpec.example(#{
+  id: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+  eventTypeId: "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+  eventTypeName: "Product demo",
+  startAt: utcDateTime.fromISO("2019-08-24T20:15:00.000Z"),
+  endAt: utcDateTime.fromISO("2019-08-24T20:30:00.000Z"),
+  guestDisplayName: "Alex Kim",
+})
 model Booking {
   @format("uuid")
   id: string;

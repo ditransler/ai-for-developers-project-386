@@ -48,7 +48,9 @@ const adminActive = computed(() => route.path.startsWith('/admin'))
             stroke-linecap="round"
           />
         </svg>
-        <span class="text-base font-bold tracking-tight">{{ t('nav.brand') }}</span>
+        <span class="text-base font-bold tracking-tight">{{
+          t('nav.brand')
+        }}</span>
       </NuxtLink>
       <nav
         class="flex items-center gap-8 text-sm font-medium text-zinc-600"

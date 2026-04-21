@@ -6,7 +6,17 @@ const {
   data: bookings,
   pending,
   error,
+  refresh,
 } = await useAsyncData('admin-bookings', () => api.listAdminBookings())
+
+const loadErrorMessage = computed(() =>
+  error.value
+    ? getFetchErrorMessage(error.value, t('errors.generic'), {
+        network: t('errors.network'),
+        server: t('errors.server'),
+      })
+    : ''
+)
 
 function formatWhen(iso: string) {
   return new Intl.DateTimeFormat('en', {
@@ -31,9 +41,25 @@ function formatWhen(iso: string) {
       v-if="error"
       color="error"
       variant="soft"
-      :title="t('errors.generic')"
+      :title="loadErrorMessage"
       class="mb-6"
-    />
+    >
+      <template #description>
+        <p class="text-sm">
+          {{ t('errors.retryHint') }}
+        </p>
+      </template>
+      <template #actions>
+        <UButton
+          size="xs"
+          color="neutral"
+          variant="outline"
+          @click="() => refresh()"
+        >
+          {{ t('admin.retry') }}
+        </UButton>
+      </template>
+    </UAlert>
 
     <div v-if="pending" class="flex justify-center py-16">
       <UIcon
@@ -42,28 +68,36 @@ function formatWhen(iso: string) {
       />
     </div>
 
-    <UCard v-else-if="bookings?.length" class="divide-y divide-zinc-100">
-      <div
-        v-for="b in bookings"
-        :key="b.id"
-        class="flex flex-col gap-1 px-6 py-4 sm:flex-row sm:items-center sm:justify-between"
+    <template v-else-if="!error">
+      <UCard
+        v-if="bookings?.length"
+        :ui="{
+          root: 'rounded-lg !bg-white text-zinc-900 ring-1 ring-zinc-200/80 shadow-sm overflow-hidden',
+          body: 'divide-y divide-zinc-100 !p-0',
+        }"
       >
-        <div>
-          <p class="font-medium text-zinc-900">
-            {{ b.eventTypeName }}
-          </p>
-          <p class="text-sm text-zinc-600">
-            {{ formatWhen(b.startAt) }} — {{ formatWhen(b.endAt) }}
-          </p>
-          <p v-if="b.guestDisplayName" class="text-sm text-zinc-500">
-            {{ b.guestDisplayName }}
-          </p>
+        <div
+          v-for="b in bookings"
+          :key="b.id"
+          class="flex flex-col gap-1 px-6 py-4 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div>
+            <p class="font-medium text-zinc-900">
+              {{ b.eventTypeName }}
+            </p>
+            <p class="text-sm text-zinc-600">
+              {{ formatWhen(b.startAt) }} — {{ formatWhen(b.endAt) }}
+            </p>
+            <p v-if="b.guestDisplayName" class="text-sm text-zinc-500">
+              {{ b.guestDisplayName }}
+            </p>
+          </div>
         </div>
-      </div>
-    </UCard>
+      </UCard>
 
-    <p v-else class="py-12 text-center text-zinc-500">
-      {{ t('admin.bookingsEmpty') }}
-    </p>
+      <p v-else class="py-12 text-center text-zinc-500">
+        {{ t('admin.bookingsEmpty') }}
+      </p>
+    </template>
   </UContainer>
 </template>

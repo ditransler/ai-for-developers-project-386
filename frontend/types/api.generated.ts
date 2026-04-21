@@ -119,7 +119,17 @@ export interface components {
             error: "VALIDATION_ERROR" | "SLOT_OUTSIDE_WINDOW" | "SLOT_MISMATCH";
             message: string;
         };
-        /** @description Confirmed booking on [startAt, endAt). */
+        /**
+         * @description Confirmed booking on [startAt, endAt).
+         * @example {
+         *       "id": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+         *       "eventTypeId": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+         *       "eventTypeName": "Product demo",
+         *       "startAt": "2019-08-24T20:15:00.000Z",
+         *       "endAt": "2019-08-24T20:30:00.000Z",
+         *       "guestDisplayName": "Alex Kim"
+         *     }
+         */
         Booking: {
             /** Format: uuid */
             id: string;
@@ -151,17 +161,27 @@ export interface components {
             error: "FUTURE_BOOKINGS_EXIST";
             message: string;
         };
-        /** @description Bookable meeting template: identity, copy, and slot length. */
+        /**
+         * @description Allowed slot length: quarter-hour blocks up to one hour (for Prism mocks and real APIs).
+         * @enum {number}
+         */
+        EventDurationMinutes: 15 | 30 | 45 | 60;
+        /**
+         * @description Bookable meeting template: identity, copy, and slot length.
+         * @example {
+         *       "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+         *       "name": "Product demo",
+         *       "description": "A 15-minute walkthrough for new customers.",
+         *       "durationMinutes": 15
+         *     }
+         */
         EventType: {
             /** Format: uuid */
             id: string;
             name: string;
             description: string;
-            /**
-             * Format: int32
-             * @description Duration of one slot, in minutes.
-             */
-            durationMinutes: number;
+            /** @description Duration of one slot, in minutes (15, 30, 45, or 60 only). */
+            durationMinutes: components["schemas"]["EventDurationMinutes"];
         };
         /** @description Create an event type. */
         EventTypeCreate: {
@@ -169,15 +189,13 @@ export interface components {
             id: string;
             name: string;
             description: string;
-            /** Format: int32 */
-            durationMinutes: number;
+            durationMinutes: components["schemas"]["EventDurationMinutes"];
         };
         /** @description Partial update for an event type. */
         EventTypeUpdate: {
             name?: string;
             description?: string;
-            /** Format: int32 */
-            durationMinutes?: number;
+            durationMinutes?: components["schemas"]["EventDurationMinutes"];
         };
         InternalError: {
             message: string;
