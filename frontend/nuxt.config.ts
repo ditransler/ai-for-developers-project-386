@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     compatibilityVersion: 3,
   },
   devtools: { enabled: true },
-  modules: ['@nuxt/ui', '@nuxtjs/i18n'],
+  modules: ['@nuxt/eslint', '@nuxt/ui', '@nuxtjs/i18n'],
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     public: {

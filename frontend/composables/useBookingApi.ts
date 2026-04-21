@@ -11,8 +11,7 @@ export function useBookingApi() {
   const api = useApiClient()
 
   return {
-    listPublicEventTypes: () =>
-      api<EventType[]>('/public/event-types'),
+    listPublicEventTypes: () => api<EventType[]>('/public/event-types'),
 
     listAvailableSlots: (eventTypeId: string) =>
       api<TimeSlot[]>(`/public/event-types/${eventTypeId}/available-slots`),
@@ -20,11 +19,9 @@ export function useBookingApi() {
     createBooking: (body: CreateBookingRequest) =>
       api<Booking>('/public/bookings', { method: 'POST', body }),
 
-    listAdminBookings: () =>
-      api<Booking[]>('/admin/bookings'),
+    listAdminBookings: () => api<Booking[]>('/admin/bookings'),
 
-    listAdminEventTypes: () =>
-      api<EventType[]>('/admin/event-types'),
+    listAdminEventTypes: () => api<EventType[]>('/admin/event-types'),
 
     createEventType: (body: EventTypeCreate) =>
       api<EventType>('/admin/event-types', { method: 'POST', body }),
@@ -36,6 +33,6 @@ export function useBookingApi() {
       }),
 
     deleteEventType: (eventTypeId: string) =>
-      api<void>(`/admin/event-types/${eventTypeId}`, { method: 'DELETE' }),
+      api<undefined>(`/admin/event-types/${eventTypeId}`, { method: 'DELETE' }),
   }
 }
