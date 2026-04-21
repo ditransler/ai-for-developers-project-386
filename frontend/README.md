@@ -4,7 +4,7 @@ Nuxt 3 app (Vue 3, TypeScript, [Nuxt UI](https://ui.nuxt.com/), [Nuxt i18n](http
 
 ## Prerequisites
 
-- Node.js 20+ (20.19+ matches engine ranges used by dependencies)
+- Node.js 24+
 - npm
 
 ## Install

@@ -21,9 +21,16 @@ export function formatLongDate(d: Date, locale = 'en'): string {
   }).format(d)
 }
 
-export function formatTimeRange(startIso: string, endIso: string, locale = 'en'): string {
+export function formatTimeRange(
+  startIso: string,
+  endIso: string,
+  locale = 'en'
+): string {
   const start = new Date(startIso)
   const end = new Date(endIso)
-  const tf = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' })
+  const tf = new Intl.DateTimeFormat(locale, {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
   return `${tf.format(start)} – ${tf.format(end)}`
 }

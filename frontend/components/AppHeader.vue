@@ -6,13 +6,18 @@ const bookActive = computed(() => route.path.startsWith('/booking'))
 </script>
 
 <template>
-  <header class="border-b border-zinc-200/80 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+  <header
+    class="border-b border-zinc-200/80 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60"
+  >
     <UContainer class="flex flex-wrap items-center justify-between gap-4 py-4">
       <NuxtLink
         to="/"
         class="flex items-center gap-2 font-semibold text-zinc-900"
       >
-        <UIcon name="i-heroicons-calendar-days" class="size-7 text-orange-500" />
+        <UIcon
+          name="i-heroicons-calendar-days"
+          class="size-7 text-orange-500"
+        />
         {{ t('nav.brand') }}
       </NuxtLink>
       <nav class="flex items-center gap-2">

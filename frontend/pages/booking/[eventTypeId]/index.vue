@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import type { components } from '~/types/api.generated'
-import { dateKeyLocal, formatLongDate, formatTimeRange, parseDateKeyLocal } from '~/utils/date'
+import {
+  dateKeyLocal,
+  formatLongDate,
+  formatTimeRange,
+  parseDateKeyLocal,
+} from '~/utils/date'
 
 type TimeSlot = components['schemas']['TimeSlot']
 
@@ -15,7 +20,7 @@ const { data: eventType, error: typeError } = await useAsyncData(
   async () => {
     const list = await api.listPublicEventTypes()
     return list.find((e) => e.id === paramId) ?? null
-  },
+  }
 )
 
 if (!typeError.value && eventType.value === null) {
@@ -26,14 +31,15 @@ const {
   data: slots,
   pending: slotsPending,
   error: slotsError,
-} = await useAsyncData(`slots-${paramId}`, () => api.listAvailableSlots(paramId))
+} = await useAsyncData(`slots-${paramId}`, () =>
+  api.listAvailableSlots(paramId)
+)
 
 const slotsByDay = computed(() => {
   const m = new Map<string, TimeSlot[]>()
   for (const s of slots.value ?? []) {
     const k = dateKeyLocal(s.startAt)
-    if (!m.has(k))
-      m.set(k, [])
+    if (!m.has(k)) m.set(k, [])
     m.get(k)!.push(s)
   }
   for (const [, arr] of m)
@@ -56,7 +62,7 @@ watch(
     if (!selectedDateKey.value || !m.has(selectedDateKey.value))
       selectedDateKey.value = keys[0]!
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 watch(selectedDateKey, () => {
@@ -73,7 +79,7 @@ watch(
       viewMonth.value = new Date(d.getFullYear(), d.getMonth(), 1)
     }
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 function localKey(y: number, monthIndex: number, day: number): string {
@@ -88,7 +94,11 @@ const calendarCells = computed(() => {
   const first = new Date(y, m, 1)
   const startPad = (first.getDay() + 6) % 7
   const daysInMonth = new Date(y, m + 1, 0).getDate()
-  const cells: { label: number | null; key: string | null; inMonth: boolean }[] = []
+  const cells: {
+    label: number | null
+    key: string | null
+    inMonth: boolean
+  }[] = []
   for (let i = 0; i < startPad; i++)
     cells.push({ label: null, key: null, inMonth: false })
   for (let d = 1; d <= daysInMonth; d++) {
@@ -99,7 +109,9 @@ const calendarCells = computed(() => {
 })
 
 const monthLabel = computed(() =>
-  new Intl.DateTimeFormat('en', { month: 'long', year: 'numeric' }).format(viewMonth.value),
+  new Intl.DateTimeFormat('en', { month: 'long', year: 'numeric' }).format(
+    viewMonth.value
+  )
 )
 
 function shiftMonth(delta: number) {
@@ -109,26 +121,22 @@ function shiftMonth(delta: number) {
 
 const slotsForSelectedDay = computed(() => {
   const k = selectedDateKey.value
-  if (!k)
-    return []
+  if (!k) return []
   return slotsByDay.value.get(k) ?? []
 })
 
 const selectedDateLabel = computed(() => {
-  if (!selectedDateKey.value)
-    return '—'
+  if (!selectedDateKey.value) return '—'
   return formatLongDate(parseDateKeyLocal(selectedDateKey.value))
 })
 
 const selectedTimeLabel = computed(() => {
-  if (!selectedSlot.value)
-    return t('booking.timeNotSelected')
+  if (!selectedSlot.value) return t('booking.timeNotSelected')
   return formatTimeRange(selectedSlot.value.startAt, selectedSlot.value.endAt)
 })
 
 function selectDay(key: string) {
-  if (!slotsByDay.value.has(key))
-    return
+  if (!slotsByDay.value.has(key)) return
   selectedDateKey.value = key
 }
 
@@ -137,8 +145,7 @@ function goBackToCatalog() {
 }
 
 function onContinue() {
-  if (!selectedSlot.value)
-    return
+  if (!selectedSlot.value) return
   navigateTo({
     path: `/booking/${paramId}/confirm`,
     query: { startAt: selectedSlot.value.startAt },
@@ -146,8 +153,7 @@ function onContinue() {
 }
 
 function slotCountForKey(key: string | null) {
-  if (!key)
-    return 0
+  if (!key) return 0
   return slotsByDay.value.get(key)?.length ?? 0
 }
 </script>
@@ -162,10 +168,7 @@ function slotCountForKey(key: string | null) {
       class="mb-6"
     />
 
-    <div
-      v-else-if="eventType"
-      class="grid gap-6 lg:grid-cols-3"
-    >
+    <div v-else-if="eventType" class="grid gap-6 lg:grid-cols-3">
       <!-- Summary -->
       <UCard class="h-fit bg-white shadow-sm ring-1 ring-zinc-200/80">
         <div class="flex items-start gap-4 p-6">
@@ -218,7 +221,9 @@ function slotCountForKey(key: string | null) {
 
       <!-- Calendar -->
       <UCard class="bg-white shadow-sm ring-1 ring-zinc-200/80">
-        <div class="flex items-center justify-between border-b border-zinc-100 px-4 py-3">
+        <div
+          class="flex items-center justify-between border-b border-zinc-100 px-4 py-3"
+        >
           <h2 class="font-semibold text-zinc-900">
             {{ t('booking.calendarTitle') }}
           </h2>
@@ -240,8 +245,11 @@ function slotCountForKey(key: string | null) {
         <p class="px-4 pt-3 text-center text-sm font-medium text-zinc-700">
           {{ monthLabel }}
         </p>
-        <div class="grid grid-cols-7 gap-1 px-2 pb-4 pt-2 text-center text-xs text-zinc-500">
-          <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+        <div
+          class="grid grid-cols-7 gap-1 px-2 pb-4 pt-2 text-center text-xs text-zinc-500"
+        >
+          <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span
+          ><span>Fri</span><span>Sat</span><span>Sun</span>
         </div>
         <div class="grid grid-cols-7 gap-1 px-2 pb-4">
           <template v-for="(cell, idx) in calendarCells" :key="idx">
@@ -252,16 +260,22 @@ function slotCountForKey(key: string | null) {
               :color="selectedDateKey === cell.key ? 'primary' : 'neutral'"
               class="h-10 min-w-0 px-0"
               :disabled="!cell.key || !slotsByDay.has(cell.key)"
-              :class="selectedDateKey === cell.key ? 'ring-2 ring-orange-400' : ''"
+              :class="
+                selectedDateKey === cell.key ? 'ring-2 ring-orange-400' : ''
+              "
               @click="cell.key && selectDay(cell.key)"
             >
-              <span class="flex flex-col items-center gap-0.5 text-[11px] leading-none">
+              <span
+                class="flex flex-col items-center gap-0.5 text-[11px] leading-none"
+              >
                 <span>{{ cell.label }}</span>
                 <span
                   v-if="cell.key && slotCountForKey(cell.key) > 0"
                   class="font-normal text-[10px] text-zinc-500"
                 >
-                  {{ t('booking.slotsForDay', { n: slotCountForKey(cell.key) }) }}
+                  {{
+                    t('booking.slotsForDay', { n: slotCountForKey(cell.key) })
+                  }}
                 </span>
               </span>
             </UButton>
@@ -278,7 +292,10 @@ function slotCountForKey(key: string | null) {
         </div>
         <div class="p-4">
           <div v-if="slotsPending" class="flex justify-center py-10">
-            <UIcon name="i-heroicons-arrow-path" class="size-8 animate-spin text-orange-500" />
+            <UIcon
+              name="i-heroicons-arrow-path"
+              class="size-8 animate-spin text-orange-500"
+            />
           </div>
           <UAlert
             v-else-if="slotsError"
@@ -293,7 +310,9 @@ function slotCountForKey(key: string | null) {
             <li v-for="slot in slotsForSelectedDay" :key="slot.startAt">
               <UButton
                 block
-                :variant="selectedSlot?.startAt === slot.startAt ? 'solid' : 'outline'"
+                :variant="
+                  selectedSlot?.startAt === slot.startAt ? 'solid' : 'outline'
+                "
                 color="primary"
                 class="justify-between"
                 @click="selectedSlot = slot"

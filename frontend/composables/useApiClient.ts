@@ -9,8 +9,9 @@ export function useApiClient() {
 
 export function getFetchErrorMessage(error: unknown, fallback: string): string {
   const e = error as FetchError<{ message?: string }>
-  const msg = e.data && typeof e.data === 'object' && 'message' in e.data
-    ? String((e.data as { message?: string }).message ?? '')
-    : ''
+  const msg =
+    e.data && typeof e.data === 'object' && 'message' in e.data
+      ? String((e.data as { message?: string }).message ?? '')
+      : ''
   return msg || fallback
 }

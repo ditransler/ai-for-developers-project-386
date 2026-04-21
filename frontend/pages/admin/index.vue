@@ -2,10 +2,11 @@
 const { t } = useI18n()
 const api = useBookingApi()
 
-const { data: bookings, pending, error } = await useAsyncData(
-  'admin-bookings',
-  () => api.listAdminBookings(),
-)
+const {
+  data: bookings,
+  pending,
+  error,
+} = await useAsyncData('admin-bookings', () => api.listAdminBookings())
 
 function formatWhen(iso: string) {
   return new Intl.DateTimeFormat('en', {
@@ -35,7 +36,10 @@ function formatWhen(iso: string) {
     />
 
     <div v-if="pending" class="flex justify-center py-16">
-      <UIcon name="i-heroicons-arrow-path" class="size-10 animate-spin text-orange-500" />
+      <UIcon
+        name="i-heroicons-arrow-path"
+        class="size-10 animate-spin text-orange-500"
+      />
     </div>
 
     <UCard v-else-if="bookings?.length" class="divide-y divide-zinc-100">

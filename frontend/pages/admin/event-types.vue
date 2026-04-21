@@ -9,10 +9,12 @@ const { t } = useI18n()
 const toast = useToast()
 const api = useBookingApi()
 
-const { data: items, pending, error, refresh } = await useAsyncData(
-  'admin-event-types',
-  () => api.listAdminEventTypes(),
-)
+const {
+  data: items,
+  pending,
+  error,
+  refresh,
+} = await useAsyncData('admin-event-types', () => api.listAdminEventTypes())
 
 const modalOpen = ref(false)
 const editing = ref<EventType | null>(null)
@@ -57,8 +59,7 @@ async function save() {
       }
       await api.updateEventType(editing.value.id, body)
       toast.add({ title: t('admin.save'), color: 'success' })
-    }
-    else {
+    } else {
       const body: EventTypeCreate = {
         id: crypto.randomUUID(),
         name: form.name,
@@ -70,14 +71,12 @@ async function save() {
     }
     closeModal()
     await refresh()
-  }
-  catch (e: unknown) {
+  } catch (e: unknown) {
     toast.add({
       title: getFetchErrorMessage(e, t('errors.generic')),
       color: 'error',
     })
-  }
-  finally {
+  } finally {
     saving.value = false
   }
 }
@@ -88,8 +87,7 @@ function openDelete(et: EventType) {
 }
 
 async function confirmDelete() {
-  if (!deleteTarget.value)
-    return
+  if (!deleteTarget.value) return
   saving.value = true
   try {
     await api.deleteEventType(deleteTarget.value.id)
@@ -97,16 +95,14 @@ async function confirmDelete() {
     deleteOpen.value = false
     deleteTarget.value = null
     await refresh()
-  }
-  catch (e: unknown) {
+  } catch (e: unknown) {
     const msg = getFetchErrorMessage(e, t('errors.generic'))
     const status = (e as { statusCode?: number }).statusCode
     toast.add({
       title: status === 409 ? t('admin.deleteBlocked') : msg,
       color: 'error',
     })
-  }
-  finally {
+  } finally {
     saving.value = false
   }
 }
@@ -137,7 +133,10 @@ async function confirmDelete() {
     />
 
     <div v-if="pending" class="flex justify-center py-16">
-      <UIcon name="i-heroicons-arrow-path" class="size-10 animate-spin text-orange-500" />
+      <UIcon
+        name="i-heroicons-arrow-path"
+        class="size-10 animate-spin text-orange-500"
+      />
     </div>
 
     <div v-else class="space-y-4">
@@ -184,7 +183,11 @@ async function confirmDelete() {
             <UTextarea v-model="form.description" />
           </UFormGroup>
           <UFormGroup :label="t('admin.duration')">
-            <UInput v-model.number="form.durationMinutes" type="number" min="1" />
+            <UInput
+              v-model.number="form.durationMinutes"
+              type="number"
+              min="1"
+            />
           </UFormGroup>
         </div>
 
