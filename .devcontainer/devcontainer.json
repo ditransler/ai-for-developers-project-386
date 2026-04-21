@@ -9,5 +9,5 @@
       "extensions": ["ms-dotnettools.csharp", "dbaeumer.vscode-eslint"]
     }
   },
-  "postCreateCommand": "dotnet --version && node --version && npm --version"
+  "postCreateCommand": "dotnet --version && node --version && npm --version && playwright-cli --help"
 }

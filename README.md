@@ -56,6 +56,12 @@ Details: [`frontend/README.md`](frontend/README.md).
 
 End-to-end tests for the main booking path live in [`e2e/`](e2e/). From the repository root, run `make e2e` (starts the API, seeds data, runs the Nuxt **dev** server, runs Playwright; see `e2e/README.md`). For lint, format, and typecheck only: `make e2e-verify`.
 
+## Playwright Agent CLI (coding agents)
+
+The devcontainer image installs the [Playwright Agent CLI](https://playwright.dev/agent-cli/introduction) (`playwright-cli`) globally, including browsers. Agent-oriented skills live under [`.agents/skills/playwright-cli/`](.agents/skills/playwright-cli/) for tools like Cursor. Local snapshot YAML is written under `.playwright-cli/` and is gitignored.
+
+When you bump `@playwright/cli` in [`.devcontainer/Dockerfile`](.devcontainer/Dockerfile), run `playwright-cli install --skills agents` from the repository root and commit any updates under `.agents/skills/playwright-cli/`.
+
 ## Links
 
 [Cal.com](https://cal.com) — a reference service that can be used as a guide when designing the user flow.

@@ -7,6 +7,8 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && corepack disable \
+    && npm install -g @playwright/cli@latest \
+    && playwright-cli install-browser --with-deps \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 USER vscode
