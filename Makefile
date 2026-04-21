@@ -1,7 +1,8 @@
 .DEFAULT_GOAL := help
 
 .PHONY: help tsp-compile tsp-openapi prism-mock frontend-install frontend-dev frontend-build \
-	backend-restore backend-build backend-run backend-watch backend-test backend-format backend-format-check
+	backend-restore backend-build backend-run backend-watch backend-test backend-format backend-format-check \
+	e2e e2e-verify
 
 help:
 	@echo "Available targets:"
@@ -18,6 +19,8 @@ help:
 	@echo "  make backend-test      - dotnet test (backend/CalendarBooking.slnx)"
 	@echo "  make backend-format    - dotnet format (write)"
 	@echo "  make backend-format-check - dotnet format --verify-no-changes (CI)"
+	@echo "  make e2e               - E2E: run API + seed + Nuxt dev + Playwright (see e2e/)"
+	@echo "  make e2e-verify        - eslint + prettier + tsc in e2e/ (no servers)"
 
 tsp-compile:
 	npm --prefix api-contract run tsp:compile
@@ -60,3 +63,10 @@ backend-format: backend-restore
 
 backend-format-check: backend-restore
 	dotnet format $(BACKEND_SLN) --no-restore --verify-no-changes
+
+e2e:
+	bash e2e/scripts/run-e2e.sh
+
+e2e-verify:
+	npm --prefix e2e ci
+	npm --prefix e2e run verify

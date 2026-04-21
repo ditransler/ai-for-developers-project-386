@@ -52,6 +52,10 @@ Typical local setup in two terminals:
 
 Details: [`frontend/README.md`](frontend/README.md).
 
+## E2E (Playwright)
+
+End-to-end tests for the main booking path live in [`e2e/`](e2e/). From the repository root, run `make e2e` (starts the API, seeds data, runs the Nuxt **dev** server, runs Playwright; see `e2e/README.md`). For lint, format, and typecheck only: `make e2e-verify`.
+
 ## Links
 
 [Cal.com](https://cal.com) — a reference service that can be used as a guide when designing the user flow.
