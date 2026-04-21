@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import {
+  adminFormControlUi,
+  adminFormFieldUi,
+  adminFormTextareaUi,
+} from '~/utils/nuxtFormUi'
 import type { components } from '~/types/api.generated'
 
 type EventType = components['schemas']['EventType']
@@ -57,30 +62,9 @@ const modalUi = {
   header: 'border-b border-zinc-100 bg-white',
 }
 
-/** Light, zinc-based controls so labels + inputs match the forced white modal. */
-const modalFieldUi = {
-  label: 'text-sm font-semibold text-zinc-800',
-  hint: 'text-xs font-normal text-zinc-500',
-  description: 'text-xs text-zinc-500',
-  error: 'text-sm font-medium text-red-600',
-  container: 'mt-2',
-}
-
-const modalControlBase = [
-  '!w-full !rounded-lg !border-0 !bg-zinc-50 !px-3 !py-2 !text-sm !text-zinc-900 !shadow-none',
-  '!ring-1 !ring-inset !ring-zinc-300/90',
-  'placeholder:!text-zinc-400',
-  'hover:!bg-white',
-  'focus:!bg-white focus-visible:!outline-none focus-visible:!ring-2 focus-visible:!ring-orange-400/80',
-].join(' ')
-
-const modalControlUi = {
-  base: `${modalControlBase} !min-h-10`,
-}
-
-const modalTextareaUi = {
-  base: `${modalControlBase} !min-h-[5.75rem]`,
-}
+const modalFieldUi = adminFormFieldUi
+const modalControlUi = adminFormControlUi
+const modalTextareaUi = adminFormTextareaUi
 
 const DURATION_STEP = 15
 const DURATION_MAX = 60

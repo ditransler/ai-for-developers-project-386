@@ -125,8 +125,8 @@ export interface components {
          *       "id": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
          *       "eventTypeId": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
          *       "eventTypeName": "Product demo",
-         *       "startAt": "2019-08-24T20:15:00.000Z",
-         *       "endAt": "2019-08-24T20:30:00.000Z",
+         *       "startAt": "2026-04-22T15:00:00.000Z",
+         *       "endAt": "2026-04-22T15:15:00.000Z",
          *       "guestDisplayName": "Alex Kim"
          *     }
          */
@@ -203,7 +203,13 @@ export interface components {
         NotFound: {
             message: string;
         };
-        /** @description A free interval the guest may book. */
+        /**
+         * @description A free interval the guest may book.
+         * @example {
+         *       "startAt": "2026-04-22T15:00:00.000Z",
+         *       "endAt": "2026-04-22T15:15:00.000Z"
+         *     }
+         */
         TimeSlot: {
             /** Format: date-time */
             startAt: string;
@@ -525,6 +531,16 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example [
+                     *       {
+                     *         "startAt": "2026-04-22T15:00:00.000Z",
+                     *         "endAt": "2026-04-22T15:15:00.000Z"
+                     *       },
+                     *       {
+                     *         "startAt": "2026-04-22T16:00:00.000Z",
+                     *         "endAt": "2026-04-22T16:15:00.000Z"
+                     *       }
+                     *     ] */
                     "application/json": components["schemas"]["TimeSlot"][];
                 };
             };

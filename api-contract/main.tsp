@@ -65,6 +65,10 @@ model EventTypeUpdate {
 }
 
 @doc("A free interval the guest may book.")
+@TypeSpec.example(#{
+  startAt: utcDateTime.fromISO("2026-04-22T15:00:00.000Z"),
+  endAt: utcDateTime.fromISO("2026-04-22T15:15:00.000Z"),
+})
 model TimeSlot {
   startAt: utcDateTime;
   endAt: utcDateTime;
@@ -86,8 +90,8 @@ model CreateBookingRequest {
   id: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
   eventTypeId: "497f6eca-6276-4993-bfeb-53cbbbba6f08",
   eventTypeName: "Product demo",
-  startAt: utcDateTime.fromISO("2019-08-24T20:15:00.000Z"),
-  endAt: utcDateTime.fromISO("2019-08-24T20:30:00.000Z"),
+  startAt: utcDateTime.fromISO("2026-04-22T15:00:00.000Z"),
+  endAt: utcDateTime.fromISO("2026-04-22T15:15:00.000Z"),
   guestDisplayName: "Alex Kim",
 })
 model Booking {
@@ -153,6 +157,21 @@ Free slots for the given type within the default **14-day** booking window from 
 
 Slots honor `durationMinutes`, exclude time covered by **any** booking (all types), and align with `CreateBookingRequest.startAt`.
 """)
+  @opExample(#{
+    returnType: #{
+      statusCode: 200,
+      body: #[
+        #{
+          startAt: utcDateTime.fromISO("2026-04-22T15:00:00.000Z"),
+          endAt: utcDateTime.fromISO("2026-04-22T15:15:00.000Z"),
+        },
+        #{
+          startAt: utcDateTime.fromISO("2026-04-22T16:00:00.000Z"),
+          endAt: utcDateTime.fromISO("2026-04-22T16:15:00.000Z"),
+        },
+      ],
+    },
+  })
   listAvailableSlots(
     @path @format("uuid") eventTypeId: string,
   ): OkResponse & Body<TimeSlot[]> | NotFound | InternalError;
