@@ -13,7 +13,6 @@ permissions:
 
 jobs:
   cursor-agent:
-    # Only the repository owner may trigger (see github.event.comment.author_association).
     if: |
       contains(github.event.comment.body, '/cursor') &&
       github.event.comment.author_association == 'OWNER' &&
@@ -38,7 +37,7 @@ jobs:
           # Required secret for Cursor CLI authentication in CI.
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
         run: |
-          agent -p "$(cat <<'EOF'
+          agent --trust -p "$(cat <<'EOF'
           You are running as a Cursor agent in GitHub Actions.
           Trigger command: /cursor
           Repository: ${{ github.repository }}
