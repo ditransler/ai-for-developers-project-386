@@ -2,9 +2,6 @@
 /// <reference types="node" />
 export default defineNuxtConfig({
   compatibilityDate: '2025-04-01',
-  future: {
-    compatibilityVersion: 3,
-  },
   devtools: { enabled: true },
   modules: ['@nuxt/eslint', '@nuxt/ui', '@nuxtjs/i18n'],
   css: ['~/assets/css/main.css'],
