@@ -13,11 +13,13 @@ permissions:
 
 jobs:
   cursor-agent:
+    # Only the repository owner may trigger (see github.event.comment.author_association).
     if: |
       contains(github.event.comment.body, '/cursor') &&
+      github.event.comment.author_association == 'OWNER' &&
       (
         github.event_name == 'pull_request_review_comment' ||
-        (github.event_name == 'issue_comment' && github.event.issue.pull_request != null)
+        github.event_name == 'issue_comment'
       )
     runs-on: ubuntu-latest
     steps:
