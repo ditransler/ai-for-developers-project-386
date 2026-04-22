@@ -27,6 +27,9 @@ fi
 cd "$ROOT"
 npm --prefix frontend ci
 npm --prefix e2e ci
+if [[ -n "${CI:-}" ]]; then
+  (cd e2e && npx playwright install-deps chromium)
+fi
 dotnet restore backend/CalendarBooking.slnx
 
 dotnet run --project backend/src/CalendarBooking.Api/CalendarBooking.Api.csproj --no-restore > /tmp/calendar-e2e-api.log 2>&1 &

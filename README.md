@@ -2,6 +2,8 @@
 
 [![Actions Status](https://github.com/ditransler/ai-for-developers-project-386/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/ditransler/ai-for-developers-project-386/actions)
 
+[![E2E](https://github.com/ditransler/ai-for-developers-project-386/actions/workflows/e2e.yml/badge.svg)](https://github.com/ditransler/ai-for-developers-project-386/actions)
+
 ## Project Description
 
 “Calendar Booking” is a simplified time-booking service inspired by Cal.com.
