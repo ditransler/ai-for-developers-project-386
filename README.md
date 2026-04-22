@@ -4,6 +4,8 @@
 
 [![E2E](https://github.com/ditransler/ai-for-developers-project-386/actions/workflows/e2e.yml/badge.svg)](https://github.com/ditransler/ai-for-developers-project-386/actions)
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ditransler/ai-for-developers-project-386)
+
 ## Project Description
 
 “Calendar Booking” is a simplified time-booking service inspired by Cal.com.
@@ -58,7 +60,7 @@ Details: [`frontend/README.md`](frontend/README.md).
 
 End-to-end tests for the main booking path live in [`e2e/`](e2e/). From the repository root, run `make e2e` (starts the API, seeds data, **nuxi build** + **nuxi preview** for the frontend, runs Playwright; see `e2e/README.md`). For lint, format, and typecheck only: `make e2e-verify`.
 
-## Docker (production)
+## Docker
 
 The root [`Dockerfile`](Dockerfile) builds a single image: the .NET API, the Nuxt/Nitro production server, and [Caddy](https://caddyserver.com/) on the front. Caddy listens on **`PORT`** (set by the host) and forwards `/public/*` and `/admin/*` to the API; everything else is served by Nitro.
 Nuxt build/runtime in this image uses **Node.js 24**.
@@ -80,4 +82,4 @@ When you bump `@playwright/cli` in [`.devcontainer/Dockerfile`](.devcontainer/Do
 
 [Cal.com](https://cal.com) — a reference service that can be used as a guide when designing the user flow.
 
-**Deployed app (Render):** add your public Web Service URL here after deploy (for example `https://<service-name>.onrender.com`).
+**Deployed app (Render):** [https://calendar-booking-ymaf.onrender.com](https://calendar-booking-ymaf.onrender.com)
