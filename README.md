@@ -58,6 +58,18 @@ Details: [`frontend/README.md`](frontend/README.md).
 
 End-to-end tests for the main booking path live in [`e2e/`](e2e/). From the repository root, run `make e2e` (starts the API, seeds data, **nuxi build** + **nuxi preview** for the frontend, runs Playwright; see `e2e/README.md`). For lint, format, and typecheck only: `make e2e-verify`.
 
+## Docker (production)
+
+The root [`Dockerfile`](Dockerfile) builds a single image: the .NET API, the Nuxt/Nitro production server, and [Caddy](https://caddyserver.com/) on the front. Caddy listens on **`PORT`** (set by the host) and forwards `/public/*` and `/admin/*` to the API; everything else is served by Nitro.
+Nuxt build/runtime in this image uses **Node.js 24**.
+
+```bash
+docker build -t calendar-booking .
+docker run --rm -p 8080:8080 -e PORT=8080 calendar-booking
+```
+
+For [Render](https://render.com/), create a **Web Service**, choose **Docker**, point it at this repository and the root `Dockerfile`. Render injects `PORT` automatically.
+
 ## Playwright Agent CLI (coding agents)
 
 The devcontainer image installs the [Playwright Agent CLI](https://playwright.dev/agent-cli/introduction) (`playwright-cli`) globally, including browsers. Agent-oriented skills live under [`.agents/skills/playwright-cli/`](.agents/skills/playwright-cli/) for tools like Cursor. Local snapshot YAML is written under `.playwright-cli/` and is gitignored.
@@ -67,3 +79,5 @@ When you bump `@playwright/cli` in [`.devcontainer/Dockerfile`](.devcontainer/Do
 ## Links
 
 [Cal.com](https://cal.com) — a reference service that can be used as a guide when designing the user flow.
+
+**Deployed app (Render):** add your public Web Service URL here after deploy (for example `https://<service-name>.onrender.com`).
