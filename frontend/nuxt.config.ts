@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+/// <reference types="node" />
 export default defineNuxtConfig({
   compatibilityDate: '2025-04-01',
   future: {

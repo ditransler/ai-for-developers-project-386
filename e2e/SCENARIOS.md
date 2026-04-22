@@ -1,6 +1,6 @@
 # E2E user scenarios (Playwright)
 
-These scenarios are exercised against the real backend and the Nuxt app started by `make e2e` (the runner uses the **dev** server so SSR matches a working local setup; see `e2e/README.md`).
+These scenarios are exercised against the real backend and the Nuxt app started by `make e2e` (the runner runs a **production build** and **`nuxi preview`**, the same class of output you ship; see `e2e/README.md`).
 
 ## Selector policy
 

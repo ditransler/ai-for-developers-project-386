@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help tsp-compile tsp-openapi prism-mock frontend-install frontend-dev frontend-build \
+.PHONY: help tsp-compile tsp-openapi prism-mock frontend-install frontend-dev frontend-build frontend-preview \
 	backend-restore backend-build backend-run backend-watch backend-test backend-format backend-format-check \
 	e2e e2e-verify
 
@@ -10,8 +10,9 @@ help:
 	@echo "  make tsp-openapi       - emit OpenAPI to api-contract/openapi.yaml"
 	@echo "  make prism-mock        - Prism mock HTTP server (port 4010) from api-contract/openapi.yaml"
 	@echo "  make frontend-install  - npm ci in frontend/"
-	@echo "  make frontend-dev      - Nuxt dev server (long-running); often pair with make prism-mock"
-	@echo "  make frontend-build    - Nuxt production build"
+	@echo "  make frontend-dev      - nuxi dev (long-running); often pair with make prism-mock"
+	@echo "  make frontend-build    - nuxi production build (frontend/)"
+	@echo "  make frontend-preview  - production build then nuxi preview (avoids stale .output)"
 	@echo "  make backend-restore  - dotnet restore (backend/CalendarBooking.slnx)"
 	@echo "  make backend-build    - dotnet build (backend/CalendarBooking.slnx)"
 	@echo "  make backend-run      - dotnet run the API (default port from launchSettings, 5005)"
@@ -19,7 +20,7 @@ help:
 	@echo "  make backend-test      - dotnet test (backend/CalendarBooking.slnx)"
 	@echo "  make backend-format    - dotnet format (write)"
 	@echo "  make backend-format-check - dotnet format --verify-no-changes (CI)"
-	@echo "  make e2e               - E2E: run API + seed + Nuxt dev + Playwright (see e2e/)"
+	@echo "  make e2e               - E2E: run API + seed + nuxi build + nuxi preview + Playwright (see e2e/)"
 	@echo "  make e2e-verify        - eslint + prettier + tsc in e2e/ (no servers)"
 
 tsp-compile:
@@ -39,6 +40,10 @@ frontend-dev:
 
 frontend-build:
 	npm --prefix frontend run build
+
+# Rebuild, then serve .output (required after lockfile/override or Nitro changes)
+frontend-preview: frontend-build
+	npm --prefix frontend run preview
 
 BACKEND_SLN := backend/CalendarBooking.slnx
 BACKEND_PROJ := backend/src/CalendarBooking.Api/CalendarBooking.Api.csproj

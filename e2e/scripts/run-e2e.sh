@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# Orchestrates API → seed → Nuxt dev server → Playwright. Run from repository root: bash e2e/scripts/run-e2e.sh
-# Uses `nuxi dev` (not `node .output/server/index.mjs`) because the production Nitro build currently fails SSR with
-# "TypeError: _createApp is not a function" for route renders; the dev server exercises the same HTTP API and UI.
+# Orchestrates API → seed → nuxi build → nuxi preview → Playwright. Run from repository root: bash e2e/scripts/run-e2e.sh
+# Uses a production Nuxt build with NUXT_PUBLIC_API_BASE_URL set to the e2e API, then `npx nuxi preview` (node-server output).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -12,7 +11,7 @@ API_URL="${E2E_API_URL:-http://127.0.0.1:${API_PORT}}"
 export E2E_BASE_URL="${E2E_BASE_URL:-http://127.0.0.1:${FRONTEND_PORT}}"
 
 cleanup() {
-  pkill -f "nuxi dev.*--port ${FRONTEND_PORT}" 2>/dev/null || true
+  pkill -f "nuxi preview.*--port ${FRONTEND_PORT}" 2>/dev/null || true
   if [[ -n "${NUXT_PID:-}" ]]; then kill "${NUXT_PID}" 2>/dev/null || true; fi
   if [[ -n "${API_PID:-}" ]]; then kill "${API_PID}" 2>/dev/null || true; fi
 }
@@ -51,19 +50,22 @@ curl -sSf -X POST "${API_URL}/admin/event-types" \
 
 cd "$ROOT/frontend"
 export NUXT_PUBLIC_API_BASE_URL="${API_URL}"
-nohup npx nuxi dev --port "${FRONTEND_PORT}" --host 127.0.0.1 > /tmp/calendar-e2e-nuxt.log 2>&1 &
+npx nuxi build
+export NITRO_HOST=127.0.0.1
+# Long-form --port so cleanup's pkill pattern matches; Nitro also honors NITRO_PORT from this CLI.
+nohup npx nuxi preview --port "${FRONTEND_PORT}" > /tmp/calendar-e2e-preview.log 2>&1 &
 NUXT_PID=$!
 cd "$ROOT"
 
-# Dev server may take a while on first compile; require HTTP 2xx (curl -f fails on 4xx/5xx).
+# Preview server may take a moment; require HTTP 2xx (curl -f fails on 4xx/5xx).
 for _ in $(seq 1 180); do
   if curl -sf "http://127.0.0.1:${FRONTEND_PORT}/booking" > /dev/null; then
     break
   fi
   sleep 0.5
   if ! kill -0 "${NUXT_PID}" 2>/dev/null; then
-    echo "Nuxt process exited. Log:" >&2
-    cat /tmp/calendar-e2e-nuxt.log >&2
+    echo "Nuxt preview process exited. Log:" >&2
+    cat /tmp/calendar-e2e-preview.log >&2
     exit 1
   fi
 done

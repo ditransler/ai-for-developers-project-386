@@ -54,7 +54,7 @@ Details: [`frontend/README.md`](frontend/README.md).
 
 ## E2E (Playwright)
 
-End-to-end tests for the main booking path live in [`e2e/`](e2e/). From the repository root, run `make e2e` (starts the API, seeds data, runs the Nuxt **dev** server, runs Playwright; see `e2e/README.md`). For lint, format, and typecheck only: `make e2e-verify`.
+End-to-end tests for the main booking path live in [`e2e/`](e2e/). From the repository root, run `make e2e` (starts the API, seeds data, **nuxi build** + **nuxi preview** for the frontend, runs Playwright; see `e2e/README.md`). For lint, format, and typecheck only: `make e2e-verify`.
 
 ## Playwright Agent CLI (coding agents)
 

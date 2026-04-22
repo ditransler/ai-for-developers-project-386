@@ -30,7 +30,9 @@ const {
             {{ hostInitial }}
           </div>
           <div class="flex min-w-0 flex-col gap-1.5">
-            <p class="text-base font-semibold leading-snug text-zinc-800 sm:text-lg">
+            <p
+              class="text-base font-semibold leading-snug text-zinc-800 sm:text-lg"
+            >
               {{ appConfig.calendarHost.displayName }}
             </p>
             <p

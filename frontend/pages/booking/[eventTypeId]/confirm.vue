@@ -101,9 +101,7 @@ async function submit() {
           <p class="font-semibold text-zinc-900">
             {{ eventType?.name }}
           </p>
-          <p class="mt-2 text-zinc-700">
-            {{ summaryDate }} · {{ timeLabel }}
-          </p>
+          <p class="mt-2 text-zinc-700">{{ summaryDate }} · {{ timeLabel }}</p>
         </div>
 
         <UFormField :label="t('confirm.guestName')" :ui="adminFormFieldUi">

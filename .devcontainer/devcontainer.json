@@ -4,6 +4,9 @@
     "dockerfile": "Dockerfile",
     "context": ".."
   },
+  "remoteEnv": {
+    "PATH": "/usr/bin:/usr/local/bin:${containerEnv:PATH}"
+  },
   "customizations": {
     "vscode": {
       "extensions": ["ms-dotnettools.csharp", "dbaeumer.vscode-eslint"]
